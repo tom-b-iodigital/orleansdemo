@@ -1,0 +1,37 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<h1>Orleans demo</h1>
+
+<p>This app is the blazor frontend for the Lunch & Learn Orleans demo.</p>
+
+@if (@IndexViewModel.IsConnected)
+{
+    <p>You are now using @IndexViewModel.Name to communicate with people around you</p>
+}
+else
+{
+    <p>
+        Pick a name that you will use to communicate: 
+        <input type="text" @bind="@IndexViewModel.Name" />
+        <button type="button" @onclick="() => IndexViewModel.ConnectToOrleans.Execute(null)">Connect</button>
+
+        @if (@IndexViewModel.IsConnecting)
+        {
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif" style="width: 64px" />
+        }
+    </p>
+}
+
+@code{
+    [Inject]
+    private IndexViewModel IndexViewModel { get; set; } = null!;
+
+    protected override Task OnInitializedAsync()
+    {
+        IndexViewModel.PropertyChanged += (sender, e) => { StateHasChanged(); };
+
+        return base.OnInitializedAsync();
+    }
+}

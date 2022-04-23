@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:OrleansDemo.Domain.ViewModels;assembly=OrleansDemo.Domain"
+             x:Class="OrleansDemo.MauiNativeApp.Index"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             Title="Index">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <StackLayout x:DataType="viewModels:IndexViewModel">
+        <Label Text="This is the native app to demonstrate MAUI and Orleans"
+                VerticalOptions="Center" 
+                HorizontalOptions="Start" />
+
+        <Grid IsVisible="{Binding IsConnected, Converter={StaticResource InvertedBoolConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Label Text="Pick a name that you will use to communicate: "
+                VerticalOptions="Center" 
+                HorizontalOptions="Start" Grid.Column="0" />
+            <Entry Text="{Binding Name}" Grid.Column="1" />
+            <Button Text="Connect" Command="{Binding ConnectToOrleans}" Grid.Column="2" />
+
+            <Label Text="Connecting..." IsVisible="{Binding IsConnecting}"
+                VerticalOptions="Center" 
+                HorizontalOptions="Start" Grid.Row="1" />
+        </Grid>
+
+        <Label Text="{Binding Name, StringFormat='You are now using {0} to communicate with people around you'}" IsVisible="{Binding IsConnected}" />
+    </StackLayout>
+</ContentPage>
